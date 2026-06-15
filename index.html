@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0a0a12">
-    <title>NeuroGo</title>
+    <title>NEURO-GO</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -594,26 +594,153 @@
         @media (max-width: 767px) {
             .game-desktop-sidebar { display: none !important; }
         }
+
+        .about-btn {
+            position: absolute;
+            top: max(16px, env(safe-area-inset-top, 16px));
+            right: 16px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(10px, 2.5vw, 13px);
+            padding: 8px 16px;
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            background: transparent;
+            color: var(--neon-cyan);
+            cursor: pointer;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+        .about-btn:hover, .about-btn:active {
+            background: rgba(0, 240, 255, 0.08);
+            box-shadow: 0 0 14px rgba(0, 240, 255, 0.2);
+        }
+
+        .home-footer {
+            position: absolute;
+            bottom: max(14px, env(safe-area-inset-bottom, 14px));
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: clamp(11px, 2.5vw, 13px);
+            color: rgba(0, 240, 255, 0.3);
+            letter-spacing: 3px;
+            white-space: nowrap;
+        }
+
+        .about-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+        .about-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .about-modal {
+            background: var(--panel-bg);
+            border: 1px solid var(--neon-cyan);
+            border-radius: 16px;
+            padding: 36px 28px 28px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.15);
+            width: 90%;
+            max-width: 320px;
+            position: relative;
+        }
+        .about-close {
+            position: absolute;
+            top: 12px; right: 14px;
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 18px;
+            cursor: pointer;
+            line-height: 1;
+            padding: 4px 8px;
+        }
+        .about-close:hover { color: var(--neon-cyan); }
+        .dev-link {
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(14px, 3.5vw, 18px);
+            color: var(--neon-cyan);
+            text-decoration: none;
+            letter-spacing: 2px;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+            padding-bottom: 2px;
+            transition: all 0.3s ease;
+        }
+        .dev-link:hover { color: #fff; border-color: #fff; }
+
+        .ai-thinking {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            color: var(--neon-pink);
+            letter-spacing: 2px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .ai-thinking.visible { opacity: 1; }
     </style>
 </head>
 <body>
     <canvas id="bg-canvas"></canvas>
 
     <div class="screen home-screen" id="homeScreen">
+        <button class="about-btn" onclick="showAbout()">ABOUT</button>
         <div class="logo-container">
-            <h1>NEUROGO</h1>
-            <div class="subtitle">QUANTUM STRATEGY</div>
+            <h1>NEURO-GO</h1>
+            <div class="subtitle">BOARD GAME</div>
         </div>
         <div class="menu-buttons">
             <button class="btn primary" onclick="showScreen('sizeSelectScreen')">NEW GAME</button>
             <button class="btn" onclick="showScreen('settingsScreen')">SETTINGS</button>
             <button class="btn" onclick="showScreen('rulesScreen')">HOW TO PLAY</button>
         </div>
+        <div class="home-footer">@2026 MKDEV</div>
+    </div>
+
+    <div class="about-overlay" id="aboutOverlay" onclick="closeAbout(event)">
+        <div class="about-modal">
+            <button class="about-close" onclick="closeAbout()">✕</button>
+            <div style="font-family:'Orbitron',sans-serif;font-size:clamp(20px,5vw,26px);color:var(--neon-cyan);letter-spacing:3px;margin-bottom:6px;">NEURO-GO</div>
+            <div style="font-family:'Rajdhani',sans-serif;font-size:clamp(13px,3vw,16px);color:#888;letter-spacing:2px;margin-bottom:24px;">v1.0.0</div>
+            <div style="border-top:1px solid rgba(0,240,255,0.15);padding-top:20px;margin-bottom:20px;">
+                <div style="font-size:clamp(13px,3vw,15px);color:#b0b0c0;margin-bottom:10px;">Developer</div>
+                <a href="https://www.facebook.com/CHARLESBANEMK" target="_blank" rel="noopener" class="dev-link">Charles MK</a>
+            </div>
+            <div style="font-size:clamp(11px,2.5vw,13px);color:#555;">@2026 MKDEV</div>
+        </div>
     </div>
 
     <div class="screen hidden" id="sizeSelectScreen">
         <div class="settings-panel">
-            <h2>BOARD SIZE</h2>
+            <h2>NEW GAME</h2>
+
+            <div style="margin-bottom: 18px;">
+                <div style="font-size: clamp(13px,3vw,15px); color: #b0b0c0; margin-bottom: 10px;">Game Mode</div>
+                <div class="setting-control" style="justify-content: center; gap: 10px;">
+                    <button class="option-btn active" id="modeVsPlayer" onclick="selectMode('player')">VS PLAYER</button>
+                    <button class="option-btn" id="modeVsComputer" onclick="selectMode('computer')">VS COMPUTER</button>
+                </div>
+            </div>
+
+            <div style="border-top: 1px solid rgba(0,240,255,0.08); padding-top: 18px; margin-bottom: 4px; font-size: clamp(13px,3vw,15px); color: #b0b0c0;">Board Size</div>
             <div class="size-grid">
                 <div class="size-card" data-size="6" onclick="selectSize(6)">
                     <h3>6×6</h3>
@@ -643,7 +770,7 @@
             <div class="setting-row">
                 <span class="setting-label">Board Theme</span>
                 <div class="setting-control">
-                    <button class="option-btn active" data-theme="cyber" onclick="setTheme('cyber')">Cyber</button>
+                    <button class="option-btn active" data-theme="cyber" onclick="setTheme('cyber')">CB</button>
                     <button class="option-btn" data-theme="classic" onclick="setTheme('classic')">Classic</button>
                     <button class="option-btn" data-theme="dark" onclick="setTheme('dark')">Dark</button>
                 </div>
@@ -746,6 +873,7 @@
 
         <div class="board-wrapper">
             <canvas id="game-canvas"></canvas>
+            <div class="ai-thinking">CPU THINKING…</div>
         </div>
 
         <div class="game-bottom-bar" id="mobileBottomBar">
@@ -784,6 +912,7 @@
             soundEnabled: true,
             showNumbers: false,
             difficulty: 'medium',
+            vsComputer: false,
             board: [],
             currentPlayer: 'black',
             moveHistory: [],
@@ -886,6 +1015,22 @@
             document.getElementById(screenId).classList.remove('hidden');
         }
 
+        function showAbout() {
+            document.getElementById('aboutOverlay').classList.add('active');
+        }
+
+        function closeAbout(e) {
+            if (!e || e.target === document.getElementById('aboutOverlay') || e.currentTarget === document.querySelector('.about-close')) {
+                document.getElementById('aboutOverlay').classList.remove('active');
+            }
+        }
+
+        function selectMode(mode) {
+            state.vsComputer = (mode === 'computer');
+            document.getElementById('modeVsPlayer').classList.toggle('active', mode === 'player');
+            document.getElementById('modeVsComputer').classList.toggle('active', mode === 'computer');
+        }
+
         function setTheme(theme) {
             state.theme = theme;
             document.querySelectorAll('[data-theme]').forEach(btn => {
@@ -939,6 +1084,20 @@
             initBoard();
             showScreen('gameScreen');
             setTimeout(setupCanvas, 50);
+
+            // Update player labels based on mode
+            const p1Name = 'YOU (BLACK)';
+            const p2Name = state.vsComputer ? 'CPU (WHITE)' : 'PLAYER 2';
+            const allP1 = document.querySelectorAll('.name');
+            // Update desktop sidebar names
+            const desktopNames = document.querySelectorAll('#desktopSidebar .name');
+            if (desktopNames[0]) desktopNames[0].textContent = 'PLAYER 1';
+            if (desktopNames[1]) desktopNames[1].textContent = state.vsComputer ? 'CPU' : 'PLAYER 2';
+            // Update mobile badge names
+            const mobileBadgeBlack = document.querySelector('#mobileBlackBadge .name');
+            const mobileBadgeWhite = document.querySelector('#mobileWhiteBadge .name');
+            if (mobileBadgeBlack) mobileBadgeBlack.textContent = 'YOU';
+            if (mobileBadgeWhite) mobileBadgeWhite.textContent = state.vsComputer ? 'CPU' : 'WHITE';
         }
 
         function getAvailableSize() {
@@ -1155,6 +1314,8 @@
 
         function handleInput(clientX, clientY) {
             if (state.gameOver || state.paused) return;
+            // Block input when it's the AI's turn
+            if (state.vsComputer && state.currentPlayer === 'white') return;
             const pos = getBoardPos(clientX, clientY);
             if (!pos) return;
             const { row, col } = pos;
@@ -1250,6 +1411,16 @@
             state.currentPlayer = opponent;
             updateUI();
             drawBoard();
+
+            if (state.vsComputer && state.currentPlayer === 'white' && !state.gameOver) {
+                const thinkEl = document.querySelector('.ai-thinking');
+                if (thinkEl) thinkEl.classList.add('visible');
+                const delay = state.difficulty === 'easy' ? 400 : state.difficulty === 'hard' ? 900 : 600;
+                setTimeout(() => {
+                    if (thinkEl) thinkEl.classList.remove('visible');
+                    aiMove();
+                }, delay);
+            }
         }
 
         function passTurn() {
@@ -1264,16 +1435,101 @@
 
         function undoMove() {
             if (state.moveHistory.length === 0 || state.gameOver) return;
-            const lastMove = state.moveHistory.pop();
-            if (lastMove.row !== -1) {
-                state.board[lastMove.row][lastMove.col] = null;
+            // In VS Computer mode, undo both the AI move and the player's move
+            const movesToUndo = (state.vsComputer && state.moveHistory.length >= 2) ? 2 : 1;
+            for (let i = 0; i < movesToUndo; i++) {
+                if (state.moveHistory.length === 0) break;
+                const lastMove = state.moveHistory.pop();
+                if (lastMove.row !== -1) {
+                    state.board[lastMove.row][lastMove.col] = null;
+                }
+                state.currentPlayer = lastMove.player;
+                state.moveCount--;
             }
-            state.currentPlayer = lastMove.player;
-            state.moveCount--;
             state.lastMove = state.moveHistory.length > 0 ? 
                 { row: state.moveHistory[state.moveHistory.length-1].row, col: state.moveHistory[state.moveHistory.length-1].col } : null;
             updateUI();
             drawBoard();
+        }
+
+        function aiMove() {
+            if (state.gameOver || state.paused || state.currentPlayer !== 'white') return;
+
+            const size = state.boardSize;
+            const diff = state.difficulty;
+
+            // Collect all valid empty intersections
+            const candidates = [];
+            for (let r = 0; r < size; r++) {
+                for (let c = 0; c < size; c++) {
+                    if (state.board[r][c] === null && isValidMove(r, c)) {
+                        candidates.push([r, c]);
+                    }
+                }
+            }
+
+            if (candidates.length === 0) {
+                // AI passes
+                state.moveHistory.push({ row: -1, col: -1, player: 'white', captures: 0 });
+                state.passCount++;
+                state.currentPlayer = 'black';
+                state.lastMove = null;
+                updateUI();
+                if (state.passCount >= 2) endGame(true);
+                return;
+            }
+
+            let chosen = null;
+
+            if (diff === 'easy') {
+                // Easy: pick a random move
+                chosen = candidates[Math.floor(Math.random() * candidates.length)];
+            } else {
+                // Score each candidate move
+                const scored = candidates.map(([r, c]) => {
+                    let score = Math.random() * 2; // small randomness
+
+                    // Prefer captures
+                    state.board[r][c] = 'white';
+                    const caps = findCaptures(r, c, 'black');
+                    state.board[r][c] = null;
+                    score += caps.length * 10;
+
+                    // Prefer center on early game
+                    const center = (size - 1) / 2;
+                    const dist = Math.abs(r - center) + Math.abs(c - center);
+                    score += Math.max(0, (size - dist) * 0.4);
+
+                    // Prefer moves near existing stones (connectivity)
+                    let nearStone = 0;
+                    [[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]].forEach(([dr,dc]) => {
+                        const nr = r+dr, nc = c+dc;
+                        if (nr >= 0 && nr < size && nc >= 0 && nc < size && state.board[nr][nc] !== null) nearStone++;
+                    });
+                    score += nearStone * 1.5;
+
+                    // Hard: also defend against black captures
+                    if (diff === 'hard') {
+                        state.board[r][c] = 'black';
+                        const blackCaps = findCaptures(r, c, 'white');
+                        state.board[r][c] = null;
+                        if (blackCaps.length > 0) score += blackCaps.length * 8; // block
+                    }
+
+                    return { r, c, score };
+                });
+
+                scored.sort((a, b) => b.score - a.score);
+                // Pick from top-3 for medium, top-1 for hard
+                const pool = diff === 'hard' ? 1 : 3;
+                const pick = scored[Math.floor(Math.random() * Math.min(pool, scored.length))];
+                chosen = [pick.r, pick.c];
+            }
+
+            if (chosen) {
+                const [r, c] = chosen;
+                placeStone(r, c);
+            }
         }
 
         function updateUI() {
